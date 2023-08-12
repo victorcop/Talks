@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Talks.Domain;
+using Talks.Service;
+using Talks.Service.Models;
 
 namespace Talks.Api.Controllers
 {
@@ -10,26 +11,23 @@ namespace Talks.Api.Controllers
     [ApiController]
     public class TalksController : ControllerBase
     {
-        public TalksController()
-        {
+        private readonly ITalkService _talkService;
 
+        public TalksController(ITalkService talkService)
+        {
+            _talkService = talkService;
         }
 
         /// <summary>
         /// Gets the talks
         /// </summary>
-        /// <param name="code">Training Code</param>
         /// <returns>Returns a List of Talk</returns>
         /// <response code="200">Returns a List of Talk</response>
         /// <response code="204">No Content</response>
         [HttpGet]
-        public ActionResult<IEnumerable<Talk>> Get()
+        public ActionResult<IEnumerable<TalksDTO>> Get()
         {
-            var talks = new List<Talk>
-            {
-                new Talk { TalkId = 1, SpeakerId = 1, Title = "Teach Talk", Abstract =  "Best Web development frameworks on 2023", Level = 1},
-                new Talk { TalkId = 1, SpeakerId = 1, Title = "Anime Talk", Abstract =  "Best Shonnen Jump Animes on 2023", Level = 1},
-            };
+            var talks = _talkService.GetTalksAsync();
 
             if (talks == null || !talks.Any())
             {
