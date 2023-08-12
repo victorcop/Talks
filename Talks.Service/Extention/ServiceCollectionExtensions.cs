@@ -13,6 +13,7 @@ namespace Talks.Service.Extention
             services.AddScoped<ITalkService, TalkService>();
             services.AddScoped<ITrainingService, TrainingService>();
             services.AddScoped<ILocationService, LocationService>();
+            services.AddScoped<ISpeakerService, SpeakerService>();
             return services;
         }
     }

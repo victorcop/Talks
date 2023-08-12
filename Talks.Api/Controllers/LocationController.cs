@@ -20,8 +20,8 @@ namespace Talks.Api.Controllers
         /// </summary>
         /// <param name="talkId">Talk Id</param>
         /// <param name="code">Training code</param>
-        /// <returns>Object of the type <see cref="TrainingDTO"</returns>
-        /// <response code="200">Returns a TalkDTO</response>
+        /// <returns>Object of the type <see cref="LocationDTO"</returns>
+        /// <response code="200">Returns a LocationDTO</response>
         /// <response code="404">Not Found</response>
         [HttpGet]
         public ActionResult<LocationDTO> Get(int talkId, string code)
