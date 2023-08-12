@@ -21,11 +21,11 @@ namespace Talks.Api.Controllers
         /// <summary>
         /// Gets the talks
         /// </summary>
-        /// <returns>Returns a List of Talk</returns>
-        /// <response code="200">Returns a List of Talk</response>
+        /// <returns>IEnumerable of object of the type <see cref="TalkDTO"</returns>
+        /// <response code="200">Returns a List of TalkDTO</response>
         /// <response code="204">No Content</response>
         [HttpGet]
-        public ActionResult<IEnumerable<TalksDTO>> Get()
+        public ActionResult<IEnumerable<TalkDTO>> Get()
         {
             var talks = _talkService.GetTalksAsync();
 
@@ -35,6 +35,26 @@ namespace Talks.Api.Controllers
             }
 
             return Ok(talks);
+        }
+
+        /// <summary>
+        /// Gets a talk
+        /// </summary>
+        /// <param name="talkId">Talk Id</param>
+        /// <returns>Object of the type <see cref="TalkDTO"</returns>
+        /// <response code="200">Returns a TalkDTO</response>
+        /// <response code="404">Not Found</response>
+        [HttpGet("{talkId}")]
+        public ActionResult<TalkDTO> Get(int talkId)
+        {
+            var talk = _talkService.GetTalkAsync(talkId);
+
+            if (talk == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(talk);
         }
     }
 }

@@ -15,11 +15,21 @@ namespace Talks.Service
             _talkRepository = talkRepository;
             _mapper = mapper;
         }
-        public IEnumerable<TalksDTO> GetTalksAsync()
+
+        /// <inheritdoc/>
+        public IEnumerable<TalkDTO> GetTalksAsync()
         {
             var talks = _talkRepository.GetTalksAsync();
 
-            return _mapper.Map<IEnumerable<TalksDTO>>(talks);
+            return _mapper.Map<IEnumerable<TalkDTO>>(talks);
+        }
+
+        /// <inheritdoc/>
+        public TalkDTO GetTalkAsync(int talkId)
+        {
+            var talk = _talkRepository.GetTalkAsync(talkId);
+
+            return _mapper.Map<TalkDTO>(talk);
         }
     }
 }

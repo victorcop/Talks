@@ -11,6 +11,8 @@ namespace Talks.Service.Extention
             services.AddDataDependencies();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<ITalkService, TalkService>();
+            services.AddScoped<ITrainingService, TrainingService>();
+            services.AddScoped<ILocationService, LocationService>();
             return services;
         }
     }
