@@ -1,13 +1,16 @@
-﻿using Talks.Domain;
+﻿using Microsoft.Extensions.Logging;
+using Talks.Domain;
 
 namespace Talks.Data.Repositories
 {
     internal class TalkRepository : ITalkRepository
     {
         private readonly IEnumerable<Talk> _talks;
+        private readonly ILogger<TalkRepository> _logger;
 
-        public TalkRepository()
+        public TalkRepository(ILogger<TalkRepository> logger)
         {
+            _logger = logger;
             _talks = new List<Talk>
             {
                 new Talk { 
@@ -88,12 +91,14 @@ namespace Talks.Data.Repositories
         /// <inheritdoc/>
         public IEnumerable<Talk> GetTalksAsync()
         {
+            _logger.LogInformation($"Getting all Talks");
             return _talks;
         }
 
         /// <inheritdoc/>
         public Talk GetTalkAsync(int talkId)
         {
+            _logger.LogInformation($"Getting talk with task id: {talkId}", talkId);
             return _talks.FirstOrDefault(t => t.TalkId == talkId);
         }
     }
