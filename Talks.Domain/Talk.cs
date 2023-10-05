@@ -13,18 +13,18 @@
         /// <summary>
         /// Title
         /// </summary>
-        public string Title { get; set; }
+        public string Title { get; set; }= string.Empty;
         /// <summary>
         /// Abstract
         /// </summary>
-        public string Abstract { get; set; }
+        public string Abstract { get; set; } = string.Empty;
         /// <summary>
-        /// Object of the type <see cref="Level"/>
+        /// Object of the type <see cref="Domain.Level"/>
         /// </summary>
         public Level Level { get; set; }
         /// <summary>
-        /// IEnumerable of object of the type <see cref="Location"/>
+        /// IEnumerable of object of the type <see cref="Training"/>
         /// </summary>
-        public IEnumerable<Training> Trainings { get; set; }
+        public IEnumerable<Training> Trainings { get; set; } = Enumerable.Empty<Training>();
     }
 }

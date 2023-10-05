@@ -3,13 +3,17 @@
     public class TrainingDTO
     {
         /// <summary>
+        /// Training Reference Id
+        /// </summary>
+        public Guid TrainingReferenceId { get; set; }
+        /// <summary>
         /// Training name
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         /// <summary>
         /// Training code
         /// </summary>
-        public string Code { get; set; }
+        public string Code { get; set; } = string.Empty;
         /// <summary>
         /// Training date
         /// </summary>
@@ -21,10 +25,10 @@
         /// <summary>
         /// Training location object of the type <see cref="LocationDTO"/>
         /// </summary>
-        public LocationDTO Location { get; set; }
+        public LocationDTO? Location { get; set; } = null;
         /// <summary>
         /// Training location object of the type <see cref="SpeakerDTO"/>
         /// </summary>
-        public SpeakerDTO Speaker { get; set; }
+        public SpeakerDTO? Speaker { get; set; } = null;
     }
 }

@@ -10,6 +10,6 @@ namespace Talks.Service
         /// <param name="talkReferenceId">Talk Reference Id</param>
         /// <param name="code">Training code</param>
         /// <returns>Object of the type <see cref="LocationDTO"</returns>
-        Task<LocationDTO> GetLocationAsync(Guid talkReferenceId, string code);
+        Task<LocationDTO?> GetLocationAsync(Guid talkReferenceId, string code);
     }
 }

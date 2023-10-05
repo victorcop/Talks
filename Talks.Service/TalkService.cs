@@ -46,7 +46,7 @@ namespace Talks.Service
         }
 
         /// <inheritdoc/>
-        public async Task<TalkDTO> GetTalkAsync(Guid talkReferenceId)
+        public async Task<TalkDTO?> GetTalkAsync(Guid talkReferenceId)
         {
             try
             {
@@ -78,12 +78,14 @@ namespace Talks.Service
 
                 var finalTalk = _mapper.Map<Talk>(talk);
 
+                var referenceId = Guid.NewGuid();
+
                 finalTalk.TalkId = ++lastTalkId;
-                finalTalk.TalkReferenceId = Guid.NewGuid();
+                finalTalk.TalkReferenceId = referenceId;
 
                 var createdTalk = await _talkRepository.AddTalkAsync(finalTalk);
 
-                _logger.LogInformation($"Talk {createdTalk.TalkId} created.");
+                _logger.LogInformation($"Talk {0} created.", referenceId);
 
                 return _mapper.Map<TalkDTO>(createdTalk);
             }
@@ -95,7 +97,7 @@ namespace Talks.Service
         }
 
         /// <inheritdoc/>
-        public async Task<TalkDTO> UpdateTalkAsync(TalkUpdateDTO talk)
+        public async Task<TalkDTO?> UpdateTalkAsync(TalkUpdateDTO talk)
         {
             try
             {

@@ -15,13 +15,13 @@ namespace Talks.Service.Models
         /// </summary>
         [Required]
         [MaxLength(50)]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
         /// <summary>
         /// Abstract
         /// </summary>
         [Required]
         [MaxLength(200)]
-        public string Abstract { get; set; }
+        public string Abstract { get; set; } = string.Empty;
         /// <summary>
         /// Object of the type <see cref="Level"/>
         /// </summary>
@@ -30,6 +30,6 @@ namespace Talks.Service.Models
         /// <summary>
         /// IEnumerable of object of the type <see cref="Location"/>
         /// </summary>
-        public IEnumerable<Training> Trainings { get; set; }
+        public IEnumerable<Training> Trainings { get; set; } = Enumerable.Empty<Training>();
     }
 }

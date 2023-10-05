@@ -63,6 +63,7 @@ namespace Talks.Api.Controllers
         /// <param name="TalkCreationDTO">Object of the type <see cref="TalkCreationDTO"/></param>
         /// <returns>Object of the type <see cref="TalkDTO"/></returns>
         /// <response code="201">Created</response>
+        /// <response code="204">Updated</response>
         [HttpPost]
         public async Task<IActionResult> CreateTalk(TalkCreationDTO talk)
         {

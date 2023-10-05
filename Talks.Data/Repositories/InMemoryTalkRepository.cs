@@ -31,6 +31,7 @@ namespace Talks.Data.Repositories
                             Speaker = new Speaker
                             {
                                 SpeakerId = 1,
+                                SpeakerReferenceId = Guid.NewGuid(),
                                 FirstName = "Victor",
                                 LastName = "Velasquez",
                                 MiddleName = "Emilio",
@@ -67,7 +68,8 @@ namespace Talks.Data.Repositories
                             Name = "Best Shonnen Jump Animes on 2023",
                             Speaker = new Speaker
                             {
-                                SpeakerId = 1,
+                                SpeakerId = 2,
+                                SpeakerReferenceId= Guid.NewGuid(),
                                 FirstName = "Victor",
                                 LastName = "Velasquez",
                                 MiddleName = "Emilio",
@@ -91,21 +93,21 @@ namespace Talks.Data.Repositories
         }
 
         /// <inheritdoc/>
-        public async Task<IEnumerable<Talk>> GetTalksAsync()
+        public async Task<IEnumerable<Talk?>> GetTalksAsync()
         {
             _logger.LogInformation($"Getting all Talks");
             return await Task.FromResult(_talks);
         }
 
         /// <inheritdoc/>
-        public async Task<Talk> GetTalkAsync(Guid talkReferenceId)
+        public async Task<Talk?> GetTalkAsync(Guid talkReferenceId)
         {
             _logger.LogInformation($"Getting talk with task id: {0}", talkReferenceId);
             return await Task.FromResult(_talks.FirstOrDefault(t => t.TalkReferenceId == talkReferenceId));
         }
 
         /// <inheritdoc/>
-        public async Task<Talk> AddTalkAsync(Talk talk)
+        public async Task<Talk?> AddTalkAsync(Talk talk)
         {
             _logger.LogInformation($"Adding Talk");
 
@@ -115,11 +117,13 @@ namespace Talks.Data.Repositories
         }
 
         /// <inheritdoc/>
-        public async Task<Talk> UpdateTalkAsync(Talk talk)
+        public async Task<Talk?> UpdateTalkAsync(Talk talk)
         {
             _logger.LogInformation($"Updating Talk");
 
             var talkToUpdate = _talks.Where(t => t.TalkReferenceId == talk.TalkReferenceId).FirstOrDefault();
+
+            if (talkToUpdate == null) { return null; }
 
             talkToUpdate.Title = talk.Title;
             talkToUpdate.Abstract = talk.Abstract;

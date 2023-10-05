@@ -27,6 +27,8 @@ namespace Talks.Service
 
                 _logger.LogInformation($"Getting all Trainings");
 
+                if (talk == null) { return Enumerable.Empty<TrainingDTO>(); }
+
                 var trainings = talk.Trainings;
 
                 return _mapper.Map<IEnumerable<TrainingDTO>>(trainings);
@@ -40,13 +42,15 @@ namespace Talks.Service
         }
 
         /// <inheritdoc/>
-        public async Task<TrainingDTO> GetTrainingAsync(Guid talkReferenceId, string code)
+        public async Task<TrainingDTO?> GetTrainingAsync(Guid talkReferenceId, string code)
         {
             try
             {
-                var talk = await _talkRepository.GetTalkAsync(talkReferenceId);
-
                 _logger.LogInformation($"Getting training with task id: {0} and code: {1}", talkReferenceId, code);
+
+                var talk = await _talkRepository.GetTalkAsync(talkReferenceId);
+                
+                if (talk == null) { return null; }
 
                 var training = talk.Trainings.FirstOrDefault(t => t.Code == code);
 

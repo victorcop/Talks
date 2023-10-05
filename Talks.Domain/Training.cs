@@ -6,19 +6,26 @@
         /// Training Id
         /// </summary>
         public int TrainingId { get; set; }
-        public Speaker Speaker { get; set; }
+        /// <summary>
+        /// Training Reference Id
+        /// </summary>
+        public Guid TrainingReferenceId { get; set; }
+        /// <summary>
+        /// Object of the type <see cref="Domain.Speaker"/>
+        /// </summary>
+        public Speaker? Speaker { get; set; } = null;
         /// <summary>
         /// Training name
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; } = string.Empty;
         /// <summary>
         /// Training code
         /// </summary>
-        public string Code { get; set; }
+        public string? Code { get; set; } = string.Empty;
         /// <summary>
-        /// Training location object of the type <see cref="Location"/>
+        /// Training location object of the type <see cref="Domain.Location"/>
         /// </summary>
-        public Location Location { get; set; }
+        public Location? Location { get; set; } = null;
         /// <summary>
         /// Event Date
         /// </summary>

@@ -10,6 +10,6 @@ namespace Talks.Service
         /// <param name="talkReferenceId">Talk Reference Id</param>
         /// <param name="code">Training code</param>
         /// <returns>Object of the type <see cref="SpeakerDTO"</returns>
-        Task<SpeakerDTO> GetSpeakerAsync(Guid talkReferenceId, string code);
+        Task<SpeakerDTO?> GetSpeakerAsync(Guid talkReferenceId, string code);
     }
 }
