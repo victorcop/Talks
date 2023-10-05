@@ -19,9 +19,9 @@ namespace Talks.Service
         }
 
         /// <inheritdoc/>
-        public IEnumerable<TrainingDTO> GetAllTrainingsAsync(int talkId)
+        public async Task<IEnumerable<TrainingDTO>> GetAllTrainingsAsync(int talkId)
         {
-            var talk = _talkRepository.GetTalkAsync(talkId);
+            var talk = await _talkRepository.GetTalkAsync(talkId);
 
             _logger.LogInformation($"Getting all Trainings");
 
@@ -31,9 +31,9 @@ namespace Talks.Service
         }
 
         /// <inheritdoc/>
-        public TrainingDTO GetTrainingAsync(int talkId, string code)
+        public async Task<TrainingDTO> GetTrainingAsync(int talkId, string code)
         {
-            var talk = _talkRepository.GetTalkAsync(talkId);
+            var talk = await _talkRepository.GetTalkAsync(talkId);
 
             _logger.LogInformation($"Getting training with task id: {talkId} and code: {code}", talkId, code);
 

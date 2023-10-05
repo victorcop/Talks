@@ -15,9 +15,9 @@
         /// </summary>
         public string Abstract { get; set; }
         /// <summary>
-        /// Level
+        /// Object of the type <see cref="Level"/>
         /// </summary>
-        public int Level { get; set; }
+        public Level Level { get; set; }
         /// <summary>
         /// IEnumerable of object of the type <see cref="Location"/>
         /// </summary>

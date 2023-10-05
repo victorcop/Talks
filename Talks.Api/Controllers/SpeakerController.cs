@@ -23,9 +23,9 @@ namespace Talks.Api.Controllers
         /// <response code="200">Returns a SpeakerDTO</response>
         /// <response code="404">Not Found</response>
         [HttpGet]
-        public ActionResult<SpeakerDTO> Get(int talkId, string code)
+        public async Task<ActionResult<SpeakerDTO>> Get(int talkId, string code)
         {
-            var speaker = _speakerService.GetSpeakerAsync(talkId, code);
+            var speaker = await _speakerService.GetSpeakerAsync(talkId, code);
 
             if (speaker == null)
             {

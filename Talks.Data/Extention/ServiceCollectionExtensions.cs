@@ -8,7 +8,7 @@ namespace Talks.Data.Extention
         public static IServiceCollection AddDataDependencies(
            this IServiceCollection services)
         {
-            services.AddScoped<ITalkRepository, TalkRepository>();
+            services.AddSingleton<ITalkRepository, InMemoryTalkRepository>();
             return services;
         }
     }

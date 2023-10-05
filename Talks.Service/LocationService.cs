@@ -19,9 +19,9 @@ namespace Talks.Service
         }
 
         /// <inheritdoc/>
-        public LocationDTO GetLocationAsync(int talkId, string code)
+        public async Task<LocationDTO> GetLocationAsync(int talkId, string code)
         {
-            var talk = _talkRepository.GetTalkAsync(talkId);
+            var talk = await _talkRepository.GetTalkAsync(talkId);
 
             var training = talk.Trainings.FirstOrDefault(t => t.Code == code);
 

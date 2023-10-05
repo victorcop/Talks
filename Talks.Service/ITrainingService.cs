@@ -9,7 +9,7 @@ namespace Talks.Service
         /// </summary>
         /// <param name="talkId">Talk Id</param>
         /// <returns>IEnumerable of object of the type <see cref="TrainingDTO"</returns>
-        IEnumerable<TrainingDTO> GetAllTrainingsAsync(int talkId);
+        Task<IEnumerable<TrainingDTO>> GetAllTrainingsAsync(int talkId);
 
         /// <summary>
         /// Gets a Training Async
@@ -17,6 +17,6 @@ namespace Talks.Service
         /// <param name="talkId">Talk Id</param>
         /// <param name="code">Training code</param>
         /// <returns>Object of the type <see cref="TrainingDTO"</returns>
-        TrainingDTO GetTrainingAsync(int talkId, string code);
+        Task<TrainingDTO> GetTrainingAsync(int talkId, string code);
     }
 }

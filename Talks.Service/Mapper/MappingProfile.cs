@@ -9,9 +9,11 @@ namespace Talks.Service.Mapper
         public MappingProfile()
         {
             CreateMap<Talk, TalkDTO>().ReverseMap();
+            CreateMap<Talk, TalkCreationDTO>().ReverseMap();
+            CreateMap<TalkDTO, TalkCreationDTO>().ReverseMap();
             CreateMap<Training, TrainingDTO>().ReverseMap();
             CreateMap<Speaker, SpeakerDTO>().ReverseMap();
-            CreateMap<Location, LocationDTO>().ReverseMap();
+            CreateMap<Location, LocationDTO>().ReverseMap();            
         }
     }
 }

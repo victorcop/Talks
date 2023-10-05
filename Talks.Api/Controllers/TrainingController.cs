@@ -23,9 +23,9 @@ namespace Talks.Api.Controllers
         /// <response code="200">Returns a List of TalkDTO</response>
         /// <response code="204">No Content</response>
         [HttpGet]
-        public ActionResult<IEnumerable<TrainingDTO>> Get(int talkId)
+        public async Task<ActionResult<IEnumerable<TrainingDTO>>> Get(int talkId)
         {
-            var trainings = _trainingService.GetAllTrainingsAsync(talkId);
+            var trainings = await _trainingService.GetAllTrainingsAsync(talkId);
 
             if (trainings == null || !trainings.Any())
             {
@@ -44,9 +44,9 @@ namespace Talks.Api.Controllers
         /// <response code="200">Returns a TalkDTO</response>
         /// <response code="404">Not Found</response>
         [HttpGet("{code}")]
-        public ActionResult<TalkDTO> Get(int talkId, string code)
+        public async Task<ActionResult<TalkDTO>> Get(int talkId, string code)
         {
-            var training = _trainingService.GetTrainingAsync(talkId, code);
+            var training = await _trainingService.GetTrainingAsync(talkId, code);
 
             if (training == null)
             {

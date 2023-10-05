@@ -24,9 +24,9 @@ namespace Talks.Api.Controllers
         /// <response code="200">Returns a LocationDTO</response>
         /// <response code="404">Not Found</response>
         [HttpGet]
-        public ActionResult<LocationDTO> Get(int talkId, string code)
+        public async Task<ActionResult<LocationDTO>> Get(int talkId, string code)
         {
-            var location = _locationService.GetLocationAsync(talkId, code);
+            var location = await _locationService.GetLocationAsync(talkId, code);
 
             if (location == null)
             {

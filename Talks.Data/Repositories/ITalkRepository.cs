@@ -7,14 +7,27 @@ namespace Talks.Data.Repositories
         /// <summary>
         /// Gets Talks Async
         /// </summary>
-        /// <returns>IEnumerable of object of the type <see cref="Talk"</returns>
-        IEnumerable<Talk> GetTalksAsync();
+        /// <returns>IEnumerable of object of the type <see cref="Talk"/></returns>
+        Task<IEnumerable<Talk>> GetTalksAsync();
 
         /// <summary>
         /// Gets Talk Async
         /// </summary>
-        /// <param name="talkId"></param>
-        /// <returns>Object of the type <see cref="Talk"</returns>
-        Talk GetTalkAsync(int talkId);
+        /// <param name="talkId">talkId</param>
+        /// <returns>Object of the type <see cref="Talk"/></returns>
+        Task<Talk> GetTalkAsync(int talkId);
+
+        /// <summary>
+        /// Adds Talk Async
+        /// </summary>
+        /// <param name="talk">Object of the type <see cref="Talk"/></param>
+        /// <returns>Object of the type <see cref="Talk"/></returns>
+        Task<Talk> AddTalkAsync(Talk talk);
+
+        /// <summary>
+        /// Get Last Talk Id
+        /// </summary>
+        /// <returns>Id of the last talk</returns>
+        int GetLastTalkId();
     }
 }
