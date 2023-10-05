@@ -13,9 +13,9 @@ namespace Talks.Data.Repositories
         /// <summary>
         /// Gets Talk Async
         /// </summary>
-        /// <param name="talkId">talkId</param>
+        /// <param name="TalkReferenceId">Talk Reference Id</param>
         /// <returns>Object of the type <see cref="Talk"/></returns>
-        Task<Talk> GetTalkAsync(int talkId);
+        Task<Talk> GetTalkAsync(Guid TalkReferenceId);
 
         /// <summary>
         /// Adds Talk Async
@@ -23,6 +23,13 @@ namespace Talks.Data.Repositories
         /// <param name="talk">Object of the type <see cref="Talk"/></param>
         /// <returns>Object of the type <see cref="Talk"/></returns>
         Task<Talk> AddTalkAsync(Talk talk);
+
+        /// <summary>
+        /// Updates a Talk Async
+        /// </summary>
+        /// <param name="talk">Object of the type <see cref="Talk"/></param>
+        /// <returns>Object of the type <see cref="Talk"/></returns>
+        Task<Talk> UpdateTalkAsync(Talk talk);
 
         /// <summary>
         /// Get Last Talk Id

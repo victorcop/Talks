@@ -2,9 +2,9 @@
 {
     public enum Level
     {
-        None,
-        Basic,
-        Middle,
-        Advance
+        None = 1,
+        Basic = 2,
+        Middle = 3,
+        Advance = 4
     }
 }

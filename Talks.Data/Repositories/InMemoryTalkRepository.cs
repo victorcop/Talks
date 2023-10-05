@@ -15,6 +15,7 @@ namespace Talks.Data.Repositories
             {
                 new Talk { 
                     TalkId = 1, 
+                    TalkReferenceId = Guid.NewGuid(),
                     Title = "Teach Talk", 
                     Abstract =  "Best Web development frameworks on 2023", 
                     Level = Level.Middle,
@@ -51,6 +52,7 @@ namespace Talks.Data.Repositories
                 },
                 new Talk {
                     TalkId = 2,
+                    TalkReferenceId = Guid.NewGuid(),
                     Title = "Anime Talk",
                     Abstract =  "Best Shonnen Jump Animes on 2023",
                     Level = Level.Advance,
@@ -96,10 +98,10 @@ namespace Talks.Data.Repositories
         }
 
         /// <inheritdoc/>
-        public async Task<Talk> GetTalkAsync(int talkId)
+        public async Task<Talk> GetTalkAsync(Guid talkReferenceId)
         {
-            _logger.LogInformation($"Getting talk with task id: {talkId}", talkId);
-            return await Task.FromResult(_talks.FirstOrDefault(t => t.TalkId == talkId));
+            _logger.LogInformation($"Getting talk with task id: {0}", talkReferenceId);
+            return await Task.FromResult(_talks.FirstOrDefault(t => t.TalkReferenceId == talkReferenceId));
         }
 
         /// <inheritdoc/>
@@ -110,6 +112,20 @@ namespace Talks.Data.Repositories
             _talks.Add(talk);
 
             return await Task.FromResult(_talks.FirstOrDefault(t => t.TalkId == talk.TalkId));
+        }
+
+        /// <inheritdoc/>
+        public async Task<Talk> UpdateTalkAsync(Talk talk)
+        {
+            _logger.LogInformation($"Updating Talk");
+
+            var talkToUpdate = _talks.Where(t => t.TalkReferenceId == talk.TalkReferenceId).FirstOrDefault();
+
+            talkToUpdate.Title = talk.Title;
+            talkToUpdate.Abstract = talk.Abstract;
+            talkToUpdate.Level = talk.Level;
+
+            return await Task.FromResult(talkToUpdate);
         }
 
         /// <inheritdoc/>

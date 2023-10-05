@@ -40,14 +40,14 @@ namespace Talks.Api.Controllers
         /// <summary>
         /// Gets a talk
         /// </summary>
-        /// <param name="talkId">Talk Id</param>
+        /// <param name="talkReferenceId">Talk Reference Id</param>
         /// <returns>Object of the type <see cref="TalkDTO"/></returns>
         /// <response code="200">Returns a TalkDTO</response>
         /// <response code="404">Not Found</response>
-        [HttpGet("{talkId}", Name = "GetTalk")]
-        public async Task<ActionResult<TalkDTO>> GetTalk(int talkId)
+        [HttpGet("{talkReferenceId}", Name = "GetTalk")]
+        public async Task<ActionResult<TalkDTO>> GetTalk(Guid talkReferenceId)
         {
-            var talk = await _talkService.GetTalkAsync(talkId);
+            var talk = await _talkService.GetTalkAsync(talkReferenceId);
 
             if (talk == null)
             {
@@ -67,7 +67,25 @@ namespace Talks.Api.Controllers
         public async Task<IActionResult> CreateTalk(TalkCreationDTO talk)
         {
             var createdTalk = await _talkService.AddTalkAsync(talk);
-            return CreatedAtRoute("GetTalk", new { talkId = createdTalk.TalkId } , createdTalk);
+            return CreatedAtRoute("GetTalk", new { TalkReferenceId = createdTalk.TalkReferenceId } , createdTalk);
+        }
+
+        /// <summary>
+        /// Updates a talk
+        /// </summary>
+        /// <param name="TalkUpdateDTO">Object of the type <see cref="TalkUpdateDTO"/></param>
+        /// <returns>Object of the type <see cref="TalkDTO"/></returns>
+        /// <response code="204">Updated</response>
+        [HttpPut]
+        public async Task<ActionResult> UpdateTalk(TalkUpdateDTO talk)
+        {
+            var existingTalk = await _talkService.GetTalkAsync(talk.TalkReferenceId);
+
+            if (existingTalk == null) { return NotFound(); }
+
+            await _talkService.UpdateTalkAsync(talk);
+
+            return NoContent();
         }
     }
 }

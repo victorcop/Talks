@@ -19,13 +19,13 @@ namespace Talks.Service
         }
 
         /// <inheritdoc/>
-        public async Task<SpeakerDTO> GetSpeakerAsync(int talkId, string code)
+        public async Task<SpeakerDTO> GetSpeakerAsync(Guid talkReferenceId, string code)
         {
-            var talk = await _talkRepository.GetTalkAsync(talkId);
+            var talk = await _talkRepository.GetTalkAsync(talkReferenceId);
 
             var training = talk.Trainings.FirstOrDefault(t => t.Code == code);
 
-            _logger.LogInformation($"Getting Speaker information for task id: {talkId} and training: {code}", talkId, code);
+            _logger.LogInformation($"Getting Speaker information for task id: {0} and training: {1}", talkReferenceId, code);
 
             var speaker = training?.Speaker;
 
