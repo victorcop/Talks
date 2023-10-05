@@ -24,63 +24,94 @@ namespace Talks.Service
         /// <inheritdoc/>
         public async Task<IEnumerable<TalkDTO>> GetTalksAsync()
         {
-            var talks = await _talkRepository.GetTalksAsync();
-
-            _logger.LogInformation($"Talks fetched.");
-
-            if (talks == null || !talks.Any())
+            try
             {
-                _logger.LogInformation($"Talks not found.");
-                return Enumerable.Empty<TalkDTO>();
-            }
+                var talks = await _talkRepository.GetTalksAsync();
 
-            return _mapper.Map<IEnumerable<TalkDTO>>(talks);
+                _logger.LogInformation($"Talks fetched.");
+
+                if (talks == null || !talks.Any())
+                {
+                    _logger.LogInformation($"Talks not found.");
+                    return Enumerable.Empty<TalkDTO>();
+                }
+
+                return _mapper.Map<IEnumerable<TalkDTO>>(talks);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Error fetching Talks, Error Message: {0}", e.Message);
+                throw;
+            }
         }
 
         /// <inheritdoc/>
         public async Task<TalkDTO> GetTalkAsync(Guid talkReferenceId)
         {
-            var talk = await _talkRepository.GetTalkAsync(talkReferenceId);
-
-            if (talk == null)
+            try
             {
-                _logger.LogInformation($"Talks not found.");
-                return null;
+                var talk = await _talkRepository.GetTalkAsync(talkReferenceId);
+
+                if (talk == null)
+                {
+                    _logger.LogInformation($"Talks not found.");
+                    return null;
+                }
+
+                _logger.LogInformation($"Talk {0} fetched.", talk.TalkReferenceId);
+
+                return _mapper.Map<TalkDTO>(talk);
             }
-
-            _logger.LogInformation($"Talk {0} fetched.", talk.TalkReferenceId);
-
-            return _mapper.Map<TalkDTO>(talk);
+            catch (Exception e)
+            {
+                _logger.LogError($"Error fetching Talk: {0}, Error Message: {1}", talkReferenceId, e.Message);
+                throw;
+            }
         }
 
         /// <inheritdoc/>
         public async Task<TalkDTO> AddTalkAsync(TalkCreationDTO talk)
         {
-            var lastTalkId = _talkRepository.GetLastTalkId();
+            try
+            {
+                var lastTalkId = _talkRepository.GetLastTalkId();
 
-            var finalTalk = _mapper.Map<Talk>(talk);
+                var finalTalk = _mapper.Map<Talk>(talk);
 
-            finalTalk.TalkId = ++lastTalkId;
-            finalTalk.TalkReferenceId = Guid.NewGuid();
+                finalTalk.TalkId = ++lastTalkId;
+                finalTalk.TalkReferenceId = Guid.NewGuid();
 
-            var createdTalk = await _talkRepository.AddTalkAsync(finalTalk);
+                var createdTalk = await _talkRepository.AddTalkAsync(finalTalk);
 
-            _logger.LogInformation($"Talk {createdTalk.TalkId} created.");
+                _logger.LogInformation($"Talk {createdTalk.TalkId} created.");
 
-            return _mapper.Map<TalkDTO>(createdTalk);
+                return _mapper.Map<TalkDTO>(createdTalk);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Error adding Talk, Error Message: {0}", e.Message);
+                throw;
+            }
         }
 
         /// <inheritdoc/>
         public async Task<TalkDTO> UpdateTalkAsync(TalkUpdateDTO talk)
         {
+            try
+            {
+                var talkToUpdate = _mapper.Map<Talk>(talk);
 
-            var talkToUpdate = _mapper.Map<Talk>(talk);
+                var talkUpdated = await _talkRepository.UpdateTalkAsync(talkToUpdate);
 
-            var talkUpdated = await _talkRepository.UpdateTalkAsync(talkToUpdate);
+                _logger.LogInformation($"Talk {talk.TalkReferenceId} updated.");
 
-            _logger.LogInformation($"Talk {talk.TalkReferenceId} updated.");
-
-            return _mapper.Map<TalkDTO>(talkUpdated);
+                return _mapper.Map<TalkDTO>(talkUpdated);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Error updating Talk, Error Message: {0}", e.Message);
+                throw;
+            }
         }
     }
 }

@@ -21,15 +21,23 @@ namespace Talks.Service
         /// <inheritdoc/>
         public async Task<SpeakerDTO> GetSpeakerAsync(Guid talkReferenceId, string code)
         {
-            var talk = await _talkRepository.GetTalkAsync(talkReferenceId);
+            try
+            {
+                var talk = await _talkRepository.GetTalkAsync(talkReferenceId);
 
-            var training = talk.Trainings.FirstOrDefault(t => t.Code == code);
+                var training = talk.Trainings.FirstOrDefault(t => t.Code == code);
 
-            _logger.LogInformation($"Getting Speaker information for task id: {0} and training: {1}", talkReferenceId, code);
+                _logger.LogInformation($"Getting Speaker information for task id: {0} and training: {1}", talkReferenceId, code);
 
-            var speaker = training?.Speaker;
+                var speaker = training?.Speaker;
 
-            return _mapper.Map<SpeakerDTO>(speaker);
+                return _mapper.Map<SpeakerDTO>(speaker);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Error Getting Speaker information for task id: {0} and training: {1}, Error Message: {2}", talkReferenceId, code, e.Message);
+                throw;
+            }
         }
     }
 }
