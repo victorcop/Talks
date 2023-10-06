@@ -15,8 +15,8 @@ namespace Talks.Service
         /// Gets a Training Async
         /// </summary>
         /// <param name="talkReferenceId">Talk Reference Id</param>
-        /// <param name="code">Training code</param>
+        /// <param name="trainingReferenceId">Training Reference Id</param>
         /// <returns>Object of the type <see cref="TrainingDTO"</returns>
-        Task<TrainingDTO?> GetTrainingAsync(Guid talkReferenceId, string code);
+        Task<TrainingDTO?> GetTrainingAsync(Guid talkReferenceId, Guid trainingReferenceId);
     }
 }

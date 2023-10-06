@@ -40,7 +40,7 @@ namespace Talks.Service
             }
             catch (Exception e)
             {
-                _logger.LogError($"Error fetching Talks, Error Message: {0}", e.Message);
+                _logger.LogError($"Error fetching Talks, Error Message: {e.Message}");
                 throw;
             }
         }
@@ -58,13 +58,13 @@ namespace Talks.Service
                     return null;
                 }
 
-                _logger.LogInformation($"Talk {0} fetched.", talk.TalkReferenceId);
+                _logger.LogInformation($"Talk {talk.TalkReferenceId} fetched.");
 
                 return _mapper.Map<TalkDTO>(talk);
             }
             catch (Exception e)
             {
-                _logger.LogError($"Error fetching Talk: {0}, Error Message: {1}", talkReferenceId, e.Message);
+                _logger.LogError($"Error fetching Talk: {talkReferenceId}, Error Message: {e.Message}");
                 throw;
             }
         }
@@ -85,13 +85,13 @@ namespace Talks.Service
 
                 var createdTalk = await _talkRepository.AddTalkAsync(finalTalk);
 
-                _logger.LogInformation($"Talk {0} created.", referenceId);
+                _logger.LogInformation($"Talk {referenceId} created.");
 
                 return _mapper.Map<TalkDTO>(createdTalk);
             }
             catch (Exception e)
             {
-                _logger.LogError($"Error adding Talk, Error Message: {0}", e.Message);
+                _logger.LogError($"Error adding Talk, Error Message: {e.Message}");
                 throw;
             }
         }
@@ -111,7 +111,7 @@ namespace Talks.Service
             }
             catch (Exception e)
             {
-                _logger.LogError($"Error updating Talk, Error Message: {0}", e.Message);
+                _logger.LogError($"Error updating Talk, Error Message: {e.Message}");
                 throw;
             }
         }

@@ -35,30 +35,30 @@ namespace Talks.Service
             }
             catch (Exception e)
             {
-                _logger.LogError($"Getting all Trainings, Error Message: {0}", e.Message);
+                _logger.LogError($"Getting all Trainings, Error Message: {e.Message}");
                 throw;
             }
             
         }
 
         /// <inheritdoc/>
-        public async Task<TrainingDTO?> GetTrainingAsync(Guid talkReferenceId, string code)
+        public async Task<TrainingDTO?> GetTrainingAsync(Guid talkReferenceId, Guid trainingReferenceId)
         {
             try
             {
-                _logger.LogInformation($"Getting training with task id: {0} and code: {1}", talkReferenceId, code);
+                _logger.LogInformation($"Getting training with talk id: {talkReferenceId} and Training Reference Id: {trainingReferenceId}");
 
                 var talk = await _talkRepository.GetTalkAsync(talkReferenceId);
                 
                 if (talk == null) { return null; }
 
-                var training = talk.Trainings.FirstOrDefault(t => t.Code == code);
+                var training = talk.Trainings.FirstOrDefault(t => t.TrainingReferenceId == trainingReferenceId);
 
                 return _mapper.Map<TrainingDTO>(training);
             }
             catch (Exception e)
             {
-                _logger.LogInformation($"Getting training with task id: {0} and code: {1}, Error Message: {2}", talkReferenceId, code, e.Message);
+                _logger.LogInformation($"Getting training with talk id: {talkReferenceId} and Training Reference Id: {trainingReferenceId}, Error Message: {e.Message}");
                 throw;
             }
             

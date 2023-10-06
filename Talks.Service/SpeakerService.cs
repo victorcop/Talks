@@ -19,7 +19,7 @@ namespace Talks.Service
         }
 
         /// <inheritdoc/>
-        public async Task<SpeakerDTO?> GetSpeakerAsync(Guid talkReferenceId, string code)
+        public async Task<SpeakerDTO?> GetSpeakerAsync(Guid talkReferenceId, Guid trainingReferenceId)
         {
             try
             {
@@ -27,9 +27,9 @@ namespace Talks.Service
 
                 if (talk == null) { return null; }
 
-                var training = talk.Trainings.FirstOrDefault(t => t.Code == code);
+                var training = talk.Trainings.FirstOrDefault(t => t.TrainingReferenceId == trainingReferenceId);
 
-                _logger.LogInformation($"Getting Speaker information for task id: {0} and training: {1}", talkReferenceId, code);
+                _logger.LogInformation($"Getting Speaker information for talk id: {talkReferenceId} and training: {trainingReferenceId}");
 
                 var speaker = training?.Speaker;
 
@@ -37,7 +37,7 @@ namespace Talks.Service
             }
             catch (Exception e)
             {
-                _logger.LogError($"Error Getting Speaker information for task id: {0} and training: {1}, Error Message: {2}", talkReferenceId, code, e.Message);
+                _logger.LogError($"Error Getting Speaker information for talk id: {talkReferenceId} and training: {trainingReferenceId}, Error Message: {e.Message}");
                 throw;
             }
         }

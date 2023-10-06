@@ -23,6 +23,7 @@ namespace Talks.Data.Repositories
                     {
                         new Training
                         {
+                            TrainingReferenceId = Guid.NewGuid(),
                             Code = "NETCONF",
                             EventDate = DateTime.Now,
                             TrainingId = 1,
@@ -47,6 +48,7 @@ namespace Talks.Data.Repositories
                                 CityTown = "Global",
                                 Country = "Earth",
                                 LocationId = 1,
+                                LocationReferenceId = Guid.NewGuid()
                             }
                         }
                     }
@@ -61,6 +63,7 @@ namespace Talks.Data.Repositories
                     {
                         new Training
                         {
+                            TrainingReferenceId = Guid.NewGuid(),
                             Code = "OTAKUCONF",
                             EventDate = DateTime.Now,
                             TrainingId = 2,
@@ -85,6 +88,7 @@ namespace Talks.Data.Repositories
                                 CityTown = "Global",
                                 Country = "Earth",
                                 LocationId = 1,
+                                LocationReferenceId = Guid.NewGuid()
                             }
                         }
                     }
@@ -102,7 +106,7 @@ namespace Talks.Data.Repositories
         /// <inheritdoc/>
         public async Task<Talk?> GetTalkAsync(Guid talkReferenceId)
         {
-            _logger.LogInformation($"Getting talk with task id: {0}", talkReferenceId);
+            _logger.LogInformation($"Getting talk with talk id: {talkReferenceId}");
             return await Task.FromResult(_talks.FirstOrDefault(t => t.TalkReferenceId == talkReferenceId));
         }
 

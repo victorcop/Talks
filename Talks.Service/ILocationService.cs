@@ -8,8 +8,8 @@ namespace Talks.Service
         /// Gets a Location Async
         /// </summary>
         /// <param name="talkReferenceId">Talk Reference Id</param>
-        /// <param name="code">Training code</param>
+        /// <param name="trainingReferenceId">Training Reference Id</param>
         /// <returns>Object of the type <see cref="LocationDTO"</returns>
-        Task<LocationDTO?> GetLocationAsync(Guid talkReferenceId, string code);
+        Task<LocationDTO?> GetLocationAsync(Guid talkReferenceId, Guid trainingReferenceId);
     }
 }

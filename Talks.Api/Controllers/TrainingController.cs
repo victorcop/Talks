@@ -23,7 +23,7 @@ namespace Talks.Api.Controllers
         /// <response code="200">Returns a List of TalkDTO</response>
         /// <response code="204">No Content</response>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TrainingDTO>>> Get(Guid talkReferenceId)
+        public async Task<ActionResult<IEnumerable<TrainingDTO>>> GetTrainings(Guid talkReferenceId)
         {
             var trainings = await _trainingService.GetAllTrainingsAsync(talkReferenceId);
 
@@ -39,14 +39,14 @@ namespace Talks.Api.Controllers
         /// Gets a Training
         /// </summary>
         /// <param name="talkReferenceId">Talk Reference Id</param>
-        /// <param name="code">Training code</param>
+        /// <param name="trainingReferenceId">Training code</param>
         /// <returns>Object of the type <see cref="TrainingDTO"</returns>
         /// <response code="200">Returns a TalkDTO</response>
         /// <response code="404">Not Found</response>
-        [HttpGet("{code}")]
-        public async Task<ActionResult<TalkDTO>> Get(Guid talkReferenceId, string code)
+        [HttpGet("{trainingReferenceId}")]
+        public async Task<ActionResult<TalkDTO>> GetTraining(Guid talkReferenceId, Guid trainingReferenceId)
         {
-            var training = await _trainingService.GetTrainingAsync(talkReferenceId, code);
+            var training = await _trainingService.GetTrainingAsync(talkReferenceId, trainingReferenceId);
 
             if (training == null)
             {
