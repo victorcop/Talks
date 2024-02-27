@@ -9,10 +9,12 @@ namespace Talks.Api.Controllers
     public class TrainingController : ControllerBase
     {
         private readonly ITrainingService _trainingService;
+        private readonly ILogger<TrainingController> _logger;
 
-        public TrainingController(ITrainingService trainingService)
+        public TrainingController(ITrainingService trainingService, ILogger<TrainingController> logger)
         {
             _trainingService = trainingService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -22,17 +24,27 @@ namespace Talks.Api.Controllers
         /// <returns>IEnumerable of object of the type <see cref="TrainingDTO"</returns>
         /// <response code="200">Returns a List of TalkDTO</response>
         /// <response code="204">No Content</response>
+        /// <response code="500">Internal Server Error</response>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TrainingDTO>>> GetTrainings(Guid talkReferenceId)
         {
-            var trainings = await _trainingService.GetAllTrainingsAsync(talkReferenceId);
-
-            if (trainings == null || !trainings.Any())
+            try
             {
-                return NoContent();
-            }
+                var trainings = await _trainingService.GetAllTrainingsAsync(talkReferenceId);
 
-            return Ok(trainings);
+                if (trainings == null || !trainings.Any())
+                {
+                    _logger.LogInformation($"Training for talk {talkReferenceId} not found.");
+                    return NoContent();
+                }
+
+                return Ok(trainings);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"Error while getting Trainings for talk {talkReferenceId}", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unable to process your request");
+            }
         }
 
         /// <summary>
@@ -43,17 +55,27 @@ namespace Talks.Api.Controllers
         /// <returns>Object of the type <see cref="TrainingDTO"</returns>
         /// <response code="200">Returns a TalkDTO</response>
         /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [HttpGet("{trainingReferenceId}")]
         public async Task<ActionResult<TalkDTO>> GetTraining(Guid talkReferenceId, Guid trainingReferenceId)
         {
-            var training = await _trainingService.GetTrainingAsync(talkReferenceId, trainingReferenceId);
-
-            if (training == null)
+            try
             {
-                return NotFound();
-            }
+                var training = await _trainingService.GetTrainingAsync(talkReferenceId, trainingReferenceId);
 
-            return Ok(training);
+                if (training == null)
+                {
+                    _logger.LogInformation($"Training {trainingReferenceId} for talk {talkReferenceId} not found.");
+                    return NotFound();
+                }
+
+                return Ok(training);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"Error while getting Training {trainingReferenceId} for talk {talkReferenceId}", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unable to process your request");
+            }
         }
     }
 }

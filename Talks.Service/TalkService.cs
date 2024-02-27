@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 using Talks.Data.Repositories;
 using Talks.Domain;
 using Talks.Service.Models;

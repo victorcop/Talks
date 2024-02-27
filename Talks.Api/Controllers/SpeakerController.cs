@@ -9,9 +9,11 @@ namespace Talks.Api.Controllers
     public class SpeakerController : ControllerBase
     {
         private readonly ISpeakerService _speakerService;
-        public SpeakerController(ISpeakerService speakerService)
+        private readonly ILogger<SpeakerController> _logger;
+        public SpeakerController(ISpeakerService speakerService, ILogger<SpeakerController> logger)
         {
             _speakerService = speakerService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -22,17 +24,27 @@ namespace Talks.Api.Controllers
         /// <returns>Object of the type <see cref="SpeakerDTO"</returns>
         /// <response code="200">Returns a SpeakerDTO</response>
         /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [HttpGet]
         public async Task<ActionResult<SpeakerDTO>> Get(Guid talkReferenceId, Guid trainingReferenceId)
         {
-            var speaker = await _speakerService.GetSpeakerAsync(talkReferenceId, trainingReferenceId);
-
-            if (speaker == null)
+            try
             {
-                return NotFound();
-            }
+                var speaker = await _speakerService.GetSpeakerAsync(talkReferenceId, trainingReferenceId);
 
-            return Ok(speaker);
+                if (speaker == null)
+                {
+                    _logger.LogInformation($"Speaker not found for Training {trainingReferenceId} and talk {talkReferenceId}");
+                    return NotFound();
+                }
+
+                return Ok(speaker);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"Error while getting Speaker for Training {trainingReferenceId} and talk {talkReferenceId}", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unable to process your request");
+            }
         }
     }
 }

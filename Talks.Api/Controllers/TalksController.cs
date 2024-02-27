@@ -13,10 +13,12 @@ namespace Talks.Api.Controllers
     public class TalksController : ControllerBase
     {
         private readonly ITalkService _talkService;
+        private readonly ILogger<TalksController> _logger;
 
-        public TalksController(ITalkService talkService)
+        public TalksController(ITalkService talkService, ILogger<TalksController> logger)
         {
             _talkService = talkService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -25,17 +27,27 @@ namespace Talks.Api.Controllers
         /// <returns>IEnumerable of object of the type <see cref="TalkDTO"/></returns>
         /// <response code="200">Returns a List of TalkDTO</response>
         /// <response code="204">No Content</response>
+        /// <response code="500">Internal Server Error</response>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TalkDTO>>> GetAsync()
         {
-            var talks = await _talkService.GetTalksAsync();
-
-            if (talks == null || !talks.Any())
+            try
             {
-                return NoContent();
-            }
+                var talks = await _talkService.GetTalksAsync();
 
-            return Ok(talks);
+                if (talks == null || !talks.Any())
+                {
+                    _logger.LogInformation($"Talks not found.");
+                    return NoContent();
+                }
+
+                return Ok(talks);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"Error while getting talks", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unable to process your request");
+            }
         }
 
         /// <summary>
@@ -45,17 +57,27 @@ namespace Talks.Api.Controllers
         /// <returns>Object of the type <see cref="TalkDTO"/></returns>
         /// <response code="200">Returns a TalkDTO</response>
         /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [HttpGet("{talkReferenceId}", Name = "GetTalk")]
         public async Task<ActionResult<TalkDTO>> GetTalkAsync(Guid talkReferenceId)
         {
-            var talk = await _talkService.GetTalkAsync(talkReferenceId);
-
-            if (talk == null)
+            try
             {
-                return NotFound();
-            }
+                var talk = await _talkService.GetTalkAsync(talkReferenceId);
 
-            return Ok(talk);
+                if (talk == null)
+                {
+                    _logger.LogInformation($"Talk {talkReferenceId} not found.");
+                    return NotFound();
+                }
+
+                return Ok(talk);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"Error while getting talk {talkReferenceId}", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unable to process your request");
+            }
         }
 
         /// <summary>
@@ -65,11 +87,20 @@ namespace Talks.Api.Controllers
         /// <returns>Object of the type <see cref="TalkDTO"/></returns>
         /// <response code="201">Created</response>
         /// <response code="204">Updated</response>
+        /// <response code="500">Internal Server Error</response>
         [HttpPost]
         public async Task<IActionResult> CreateTalkAsync(TalkCreationDTO talk)
         {
-            var createdTalk = await _talkService.AddTalkAsync(talk);
-            return CreatedAtRoute("GetTalk", new { TalkReferenceId = createdTalk.TalkReferenceId }, createdTalk);
+            try
+            {
+                var createdTalk = await _talkService.AddTalkAsync(talk);
+                return CreatedAtRoute("GetTalk", new { createdTalk.TalkReferenceId }, createdTalk);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"Error while Creating talk.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unable to process your request");
+            }
         }
 
         /// <summary>
@@ -77,18 +108,31 @@ namespace Talks.Api.Controllers
         /// </summary>
         /// <param name="talkReferenceId">Talk Reference Id</param>
         /// <param name="TalkUpdateDTO">Object of the type <see cref="TalkUpdateDTO"/></param>
-        /// <returns>Object of the type <see cref="TalkDTO"/></returns>
         /// <response code="204">Updated</response>
+        /// <response code="500">Internal Server Error</response>
+        /// <returns>No Content</returns>
         [HttpPut("{talkReferenceId}")]
         public async Task<IActionResult> UpdateTalkAsync(Guid talkReferenceId, TalkUpdateDTO talk)
         {
-            var existingTalk = await _talkService.GetTalkAsync(talkReferenceId);
+            try
+            {
+                var existingTalk = await _talkService.GetTalkAsync(talkReferenceId);
 
-            if (existingTalk == null) { return NotFound(); }
+                if (existingTalk == null)
+                {
+                    _logger.LogInformation($"Talk {talkReferenceId} not found.");
+                    return NotFound();
+                }
 
-            await _talkService.UpdateTalkAsync(talkReferenceId, talk);
+                await _talkService.UpdateTalkAsync(talkReferenceId, talk);
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"Error while updating talk {talkReferenceId}.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unable to process your request");
+            }
         }
 
         /// <summary>
@@ -96,66 +140,91 @@ namespace Talks.Api.Controllers
         /// </summary>
         /// <param name="talkReferenceId">Talk Reference Id</param>
         /// <param name="patchDocument">JsonPatchDocument of the type <see cref="TalkToUpdateDTO"/></param>
-        /// <returns></returns>
+        /// <response code="204">No Content</response>
+        /// <response code="500">Internal Server Error</response>
+        /// <returns>No Content</returns>
         [HttpPatch("{talkReferenceId}")]
         public async Task<IActionResult> PartialyUpadteTalkAsync(Guid talkReferenceId, JsonPatchDocument<TalkToUpdateDTO> patchDocument)
         {
-            var talk = await _talkService.GetTalkAsync(talkReferenceId);
-
-            if (talk == null)
+            try
             {
-                return NotFound();
+                var talk = await _talkService.GetTalkAsync(talkReferenceId);
+
+                if (talk == null)
+                {
+                    _logger.LogInformation($"Talk {talkReferenceId} not found.");
+                    return NotFound();
+                }
+
+                var talkToPatch = new TalkToUpdateDTO
+                {
+                    Abstract = talk.Abstract,
+                    Title = talk.Title,
+                    Level = talk.Level
+                };
+
+                patchDocument.ApplyTo(talkToPatch, ModelState);
+
+                if (!ModelState.IsValid)
+                {
+                    _logger.LogInformation($"Bad Request", patchDocument);
+                    return BadRequest(ModelState);
+                }
+
+                if (!TryValidateModel(talkToPatch))
+                {
+                    _logger.LogInformation($"Bad Request", talkToPatch);
+                    return BadRequest(ModelState);
+                }
+
+                var talkUpdateDTO = new TalkUpdateDTO
+                {
+                    Abstract = talkToPatch.Abstract,
+                    Title = talkToPatch.Title,
+                    Level = talkToPatch.Level
+                };
+
+                await _talkService.UpdateTalkAsync(talkReferenceId, talkUpdateDTO);
+
+                return NoContent();
             }
-
-            var talkToPatch = new TalkToUpdateDTO
+            catch (Exception ex)
             {
-                Abstract = talk.Abstract,
-                Title = talk.Title,
-                Level = talk.Level
-            };
-
-            patchDocument.ApplyTo(talkToPatch, ModelState);
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
+                _logger.LogCritical($"Error while patching talk {talkReferenceId}", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unable to process your request");
             }
-
-            if (!TryValidateModel(talkToPatch))
-            {
-                return BadRequest(ModelState);
-            }
-
-            var talkUpdateDTO = new TalkUpdateDTO
-            {
-                Abstract = talkToPatch.Abstract,
-                Title = talkToPatch.Title,
-                Level = talkToPatch.Level
-            };
-
-            await _talkService.UpdateTalkAsync(talkReferenceId, talkUpdateDTO);
-
-            return NoContent();
         }
 
         /// <summary>
         /// Delete Talk Async
         /// </summary>
         /// <param name="talkReferenceId">Talk Reference Id</param>
-        /// <returns></returns>
+        /// <response code="404">Not Found</response>
+        /// <response code="204">No Content</response>
+        /// <response code="500">Internal Server Error</response>
+        /// <returns>No Content</returns>
         [HttpDelete("{talkReferenceId}")]
         public async Task<IActionResult> DeleteTalkAsync(Guid talkReferenceId)
         {
-            var talk = await _talkService.GetTalkAsync(talkReferenceId);
-
-            if (talk == null)
+            try
             {
-                return NotFound();
+                var talk = await _talkService.GetTalkAsync(talkReferenceId);
+
+                if (talk == null)
+                {
+                    _logger.LogInformation($"Talk {talkReferenceId} not found.");
+                    return NotFound();
+                }
+
+                await _talkService.DeleteTalkAsync(talkReferenceId);
+
+                return NoContent();
             }
-
-            await _talkService.DeleteTalkAsync(talkReferenceId);
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"Error while deleting talk {talkReferenceId}", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unable to process your request");
+            }
         }
     }
 }
