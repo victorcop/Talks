@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 using Talks.Domain;
 
 namespace Talks.Data.Repositories
@@ -140,6 +141,21 @@ namespace Talks.Data.Repositories
         public int GetLastTalkId()
         {
             return _talks.Max(t => t.TalkId);
+        }
+
+        /// <inheritdoc/>
+        public Task DeleteTalkAsync(Guid talkReferenceId)
+        {
+            _logger.LogInformation($"Deleting Talk with reference Id: {talkReferenceId}");
+
+            var talkToUpdate = _talks.FirstOrDefault(t => t.TalkReferenceId == talkReferenceId);
+
+            if (talkToUpdate != null)
+            {
+                _talks.Remove(talkToUpdate);
+            }
+
+            return Task.CompletedTask;
         }
     }
 }

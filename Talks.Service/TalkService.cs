@@ -97,21 +97,39 @@ namespace Talks.Service
         }
 
         /// <inheritdoc/>
-        public async Task<TalkDTO?> UpdateTalkAsync(TalkUpdateDTO talk)
+        public async Task<TalkDTO?> UpdateTalkAsync(Guid TalkReferenceId, TalkUpdateDTO talk)
         {
             try
             {
                 var talkToUpdate = _mapper.Map<Talk>(talk);
 
+                talkToUpdate.TalkReferenceId = TalkReferenceId;
+
                 var talkUpdated = await _talkRepository.UpdateTalkAsync(talkToUpdate);
 
-                _logger.LogInformation($"Talk {talk.TalkReferenceId} updated.");
+                _logger.LogInformation($"Talk {TalkReferenceId} updated.");
 
                 return _mapper.Map<TalkDTO>(talkUpdated);
             }
             catch (Exception e)
             {
                 _logger.LogError($"Error updating Talk, Error Message: {e.Message}");
+                throw;
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task DeleteTalkAsync(Guid talkReferenceId)
+        {
+            try
+            {
+                await _talkRepository.DeleteTalkAsync(talkReferenceId);
+
+                _logger.LogInformation($"Talk {talkReferenceId} Delted.");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Error Deleting Talk, Error Message: {e.Message}");
                 throw;
             }
         }

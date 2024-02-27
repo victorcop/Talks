@@ -32,6 +32,13 @@ namespace Talks.Data.Repositories
         Task<Talk?> UpdateTalkAsync(Talk talk);
 
         /// <summary>
+        /// Deletes a talk Async
+        /// </summary>
+        /// <param name="talkReferenceId"></param>
+        /// <returns></returns>
+        Task DeleteTalkAsync(Guid talkReferenceId);
+
+        /// <summary>
         /// Get Last Talk Id
         /// </summary>
         /// <returns>Id of the last talk</returns>

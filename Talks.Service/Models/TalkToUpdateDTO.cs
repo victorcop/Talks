@@ -3,7 +3,7 @@ using Talks.Domain;
 
 namespace Talks.Service.Models
 {
-    public class TalkUpdateDTO
+    public class TalkToUpdateDTO
     {
         /// <summary>
         /// Title
@@ -22,9 +22,5 @@ namespace Talks.Service.Models
         /// </summary>
         [Range(1, 4)]
         public Level Level { get; set; }
-        /// <summary>
-        /// IEnumerable of object of the type <see cref="Location"/>
-        /// </summary>
-        public IEnumerable<Training> Trainings { get; set; } = Enumerable.Empty<Training>();
     }
 }

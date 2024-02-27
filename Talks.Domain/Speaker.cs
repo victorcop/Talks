@@ -1,5 +1,8 @@
-﻿namespace Talks.Domain
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Talks.Domain
 {
+    [ExcludeFromCodeCoverage]
     public class Speaker
     {
         /// <summary>
