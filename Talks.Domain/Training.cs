@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Talks.Domain
 {
@@ -8,11 +9,8 @@ namespace Talks.Domain
         /// <summary>
         /// Training Id
         /// </summary>
-        public int TrainingId { get; set; }
-        /// <summary>
-        /// Training Reference Id
-        /// </summary>
-        public Guid TrainingReferenceId { get; set; }
+        [Key]
+        public Guid TrainingId { get; set; }
         /// <summary>
         /// Object of the type <see cref="Domain.Speaker"/>
         /// </summary>

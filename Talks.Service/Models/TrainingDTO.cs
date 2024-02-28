@@ -3,9 +3,9 @@
     public class TrainingDTO
     {
         /// <summary>
-        /// Training Reference Id
+        /// Training Id
         /// </summary>
-        public Guid TrainingReferenceId { get; set; }
+        public Guid TrainingId { get; set; }
         /// <summary>
         /// Training name
         /// </summary>

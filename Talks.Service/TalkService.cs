@@ -57,7 +57,7 @@ namespace Talks.Service
                     return null;
                 }
 
-                _logger.LogInformation($"Talk {talk.TalkReferenceId} fetched.");
+                _logger.LogInformation($"Talk {talk.TalkId} fetched.");
 
                 return _mapper.Map<TalkDTO>(talk);
             }
@@ -73,18 +73,13 @@ namespace Talks.Service
         {
             try
             {
-                var lastTalkId = _talkRepository.GetLastTalkId();
-
                 var finalTalk = _mapper.Map<Talk>(talk);
 
-                var referenceId = Guid.NewGuid();
-
-                finalTalk.TalkId = ++lastTalkId;
-                finalTalk.TalkReferenceId = referenceId;
+                finalTalk.TalkId = Guid.NewGuid();
 
                 var createdTalk = await _talkRepository.AddTalkAsync(finalTalk);
 
-                _logger.LogInformation($"Talk {referenceId} created.");
+                _logger.LogInformation($"Talk {createdTalk?.TalkId} created.");
 
                 return _mapper.Map<TalkDTO>(createdTalk);
             }
@@ -102,7 +97,7 @@ namespace Talks.Service
             {
                 var talkToUpdate = _mapper.Map<Talk>(talk);
 
-                talkToUpdate.TalkReferenceId = TalkReferenceId;
+                talkToUpdate.TalkId = TalkReferenceId;
 
                 var talkUpdated = await _talkRepository.UpdateTalkAsync(talkToUpdate);
 

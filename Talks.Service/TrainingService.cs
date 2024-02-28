@@ -52,7 +52,7 @@ namespace Talks.Service
                 
                 if (talk == null) { return null; }
 
-                var training = talk.Trainings.FirstOrDefault(t => t.TrainingReferenceId == trainingReferenceId);
+                var training = talk.Trainings.FirstOrDefault(t => t.TrainingId == trainingReferenceId);
 
                 return _mapper.Map<TrainingDTO>(training);
             }

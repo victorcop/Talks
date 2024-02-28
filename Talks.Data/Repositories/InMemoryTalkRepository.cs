@@ -15,8 +15,7 @@ namespace Talks.Data.Repositories
             _talks = new List<Talk>
             {
                 new Talk { 
-                    TalkId = 1, 
-                    TalkReferenceId = Guid.NewGuid(),
+                    TalkId = Guid.NewGuid(),
                     Title = "Teach Talk", 
                     Abstract =  "Best Web development frameworks on 2023", 
                     Level = Level.Middle,
@@ -24,16 +23,14 @@ namespace Talks.Data.Repositories
                     {
                         new Training
                         {
-                            TrainingReferenceId = Guid.NewGuid(),
+                            TrainingId = Guid.NewGuid(),
                             Code = "NETCONF",
                             EventDate = DateTime.Now,
-                            TrainingId = 1,
                             Length = 50,
                             Name = "Dotnet 6 Conference",
                             Speaker = new Speaker
                             {
-                                SpeakerId = 1,
-                                SpeakerReferenceId = Guid.NewGuid(),
+                                SpeakerId = Guid.NewGuid(),
                                 FirstName = "Victor",
                                 LastName = "Velasquez",
                                 MiddleName = "Emilio",
@@ -48,15 +45,13 @@ namespace Talks.Data.Repositories
                                 Address1 = ".NET virtual event",
                                 CityTown = "Global",
                                 Country = "Earth",
-                                LocationId = 1,
-                                LocationReferenceId = Guid.NewGuid()
+                                LocationId = Guid.NewGuid()
                             }
                         }
                     }
                 },
                 new Talk {
-                    TalkId = 2,
-                    TalkReferenceId = Guid.NewGuid(),
+                    TalkId = Guid.NewGuid(),
                     Title = "Anime Talk",
                     Abstract =  "Best Shonnen Jump Animes on 2023",
                     Level = Level.Advance,
@@ -64,16 +59,14 @@ namespace Talks.Data.Repositories
                     {
                         new Training
                         {
-                            TrainingReferenceId = Guid.NewGuid(),
+                            TrainingId = Guid.NewGuid(),
                             Code = "OTAKUCONF",
                             EventDate = DateTime.Now,
-                            TrainingId = 2,
                             Length = 50,
                             Name = "Best Shonnen Jump Animes on 2023",
                             Speaker = new Speaker
                             {
-                                SpeakerId = 2,
-                                SpeakerReferenceId= Guid.NewGuid(),
+                                SpeakerId= Guid.NewGuid(),
                                 FirstName = "Victor",
                                 LastName = "Velasquez",
                                 MiddleName = "Emilio",
@@ -88,8 +81,7 @@ namespace Talks.Data.Repositories
                                 Address1 = ".NET virtual event",
                                 CityTown = "Global",
                                 Country = "Earth",
-                                LocationId = 1,
-                                LocationReferenceId = Guid.NewGuid()
+                                LocationId = Guid.NewGuid()
                             }
                         }
                     }
@@ -108,7 +100,7 @@ namespace Talks.Data.Repositories
         public async Task<Talk?> GetTalkAsync(Guid talkReferenceId)
         {
             _logger.LogInformation($"Getting talk with talk id: {talkReferenceId}");
-            return await Task.FromResult(_talks.FirstOrDefault(t => t.TalkReferenceId == talkReferenceId));
+            return await Task.FromResult(_talks.FirstOrDefault(t => t.TalkId == talkReferenceId));
         }
 
         /// <inheritdoc/>
@@ -126,7 +118,7 @@ namespace Talks.Data.Repositories
         {
             _logger.LogInformation($"Updating Talk");
 
-            var talkToUpdate = _talks.Where(t => t.TalkReferenceId == talk.TalkReferenceId).FirstOrDefault();
+            var talkToUpdate = _talks.Where(t => t.TalkId == talk.TalkId).FirstOrDefault();
 
             if (talkToUpdate == null) { return null; }
 
@@ -138,7 +130,7 @@ namespace Talks.Data.Repositories
         }
 
         /// <inheritdoc/>
-        public int GetLastTalkId()
+        public Guid GetLastTalkId()
         {
             return _talks.Max(t => t.TalkId);
         }
@@ -148,7 +140,7 @@ namespace Talks.Data.Repositories
         {
             _logger.LogInformation($"Deleting Talk with reference Id: {talkReferenceId}");
 
-            var talkToUpdate = _talks.FirstOrDefault(t => t.TalkReferenceId == talkReferenceId);
+            var talkToUpdate = _talks.FirstOrDefault(t => t.TalkId == talkReferenceId);
 
             if (talkToUpdate != null)
             {

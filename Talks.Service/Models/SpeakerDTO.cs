@@ -3,9 +3,9 @@
     public class SpeakerDTO
     {
         /// <summary>
-        /// Speaker Reference Id
+        /// Speaker Id
         /// </summary>
-        public Guid SpeakerReferenceId { get; set; }
+        public Guid SpeakerId { get; set; }
         /// <summary>
         /// Speaker First Name
         /// </summary>

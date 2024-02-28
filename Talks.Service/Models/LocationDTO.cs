@@ -3,9 +3,9 @@
     public class LocationDTO
     {
         /// <summary>
-        /// Location Reference Id
+        /// Location Id
         /// </summary>
-        public Guid LocationReferenceId { get; set; }
+        public Guid LocationId { get; set; }
         /// <summary>
         /// Venue Name 
         /// </summary>

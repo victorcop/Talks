@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Talks.Domain
 {
@@ -6,13 +7,10 @@ namespace Talks.Domain
     public class Speaker
     {
         /// <summary>
-        /// Speaker Id
-        /// </summary>
-        public int SpeakerId { get; set; }
-        /// <summary>
         /// Speaker Reference Id
         /// </summary>
-        public Guid SpeakerReferenceId { get; set; }
+        [Key]
+        public Guid SpeakerId { get; set; }
         /// <summary>
         /// Speaker First Name
         /// </summary>

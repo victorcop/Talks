@@ -27,7 +27,7 @@ namespace Talks.Service
 
                 if (talk == null) { return null; }
 
-                var training = talk.Trainings.FirstOrDefault(t => t.TrainingReferenceId == trainingReferenceId);
+                var training = talk.Trainings.FirstOrDefault(t => t.TrainingId == trainingReferenceId);
 
                 _logger.LogInformation($"Getting Location information for talk id: {talkReferenceId} and training: {trainingReferenceId}");
 

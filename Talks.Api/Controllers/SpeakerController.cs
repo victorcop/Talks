@@ -4,7 +4,7 @@ using Talks.Service.Models;
 
 namespace Talks.Api.Controllers
 {
-    [Route("api/Talks/{talkReferenceId}/Training/{trainingReferenceId}/[controller]")]
+    [Route("api/Talks/{talkId}/Training/{trainingId}/[controller]")]
     [ApiController]
     public class SpeakerController : ControllerBase
     {
@@ -19,22 +19,22 @@ namespace Talks.Api.Controllers
         /// <summary>
         /// Gets a Speaker
         /// </summary>
-        /// <param name="talkReferenceId">Talk Reference Id</param>
-        /// <param name="trainingReferenceId">Training Reference Id</param>
+        /// <param name="talkId">Talk Id</param>
+        /// <param name="trainingId">Training Id</param>
         /// <returns>Object of the type <see cref="SpeakerDTO"</returns>
         /// <response code="200">Returns a SpeakerDTO</response>
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server Error</response>
         [HttpGet]
-        public async Task<ActionResult<SpeakerDTO>> Get(Guid talkReferenceId, Guid trainingReferenceId)
+        public async Task<ActionResult<SpeakerDTO>> Get(Guid talkId, Guid trainingId)
         {
             try
             {
-                var speaker = await _speakerService.GetSpeakerAsync(talkReferenceId, trainingReferenceId);
+                var speaker = await _speakerService.GetSpeakerAsync(talkId, trainingId);
 
                 if (speaker == null)
                 {
-                    _logger.LogInformation($"Speaker not found for Training {trainingReferenceId} and talk {talkReferenceId}");
+                    _logger.LogInformation($"Speaker not found for Training {trainingId} and talk {talkId}");
                     return NotFound();
                 }
 
@@ -42,7 +42,7 @@ namespace Talks.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogCritical($"Error while getting Speaker for Training {trainingReferenceId} and talk {talkReferenceId}", ex);
+                _logger.LogCritical($"Error while getting Speaker for Training {trainingId} and talk {talkId}", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Unable to process your request");
             }
         }

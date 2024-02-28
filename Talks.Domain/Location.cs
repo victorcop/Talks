@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Talks.Domain
 {
@@ -6,13 +7,10 @@ namespace Talks.Domain
     public class Location
     {
         /// <summary>
-        /// Location Id
-        /// </summary>
-        public int LocationId { get; set; }
-        /// <summary>
         /// Location Reference Id
         /// </summary>
-        public Guid LocationReferenceId { get; set; }
+        [Key]
+        public Guid LocationId { get; set; }
         /// <summary>
         /// Venue Name 
         /// </summary>

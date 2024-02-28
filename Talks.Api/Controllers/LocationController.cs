@@ -4,7 +4,7 @@ using Talks.Service.Models;
 
 namespace Talks.Api.Controllers
 {
-    [Route("api/Talks/{talkReferenceId}/Training/{trainingReferenceId}/[controller]")]
+    [Route("api/Talks/{talkId}/Training/{trainingId}/[controller]")]
     [ApiController]
     public class LocationController : ControllerBase
     {
@@ -18,15 +18,15 @@ namespace Talks.Api.Controllers
         /// <summary>
         /// Gets a Location
         /// </summary>
-        /// <param name="talkReferenceId">Talk Reference Id</param>
-        /// <param name="trainingReferenceId">Training Reference Id</param>
+        /// <param name="talkId">Talk Reference Id</param>
+        /// <param name="trainingId">Training Reference Id</param>
         /// <returns>Object of the type <see cref="LocationDTO"</returns>
         /// <response code="200">Returns a LocationDTO</response>
         /// <response code="404">Not Found</response>
         [HttpGet]
-        public async Task<ActionResult<LocationDTO>> Get(Guid talkReferenceId, Guid trainingReferenceId)
+        public async Task<ActionResult<LocationDTO>> Get(Guid talkId, Guid trainingId)
         {
-            var location = await _locationService.GetLocationAsync(talkReferenceId, trainingReferenceId);
+            var location = await _locationService.GetLocationAsync(talkId, trainingId);
 
             if (location == null)
             {

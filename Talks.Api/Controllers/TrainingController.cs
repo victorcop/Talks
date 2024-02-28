@@ -4,7 +4,7 @@ using Talks.Service.Models;
 
 namespace Talks.Api.Controllers
 {
-    [Route("api/Talks/{talkReferenceId}/[controller]")]
+    [Route("api/Talks/{talkId}/[controller]")]
     [ApiController]
     public class TrainingController : ControllerBase
     {
@@ -20,21 +20,21 @@ namespace Talks.Api.Controllers
         /// <summary>
         /// Gets the Trainings for a given Talk
         /// </summary>
-        /// <param name="talkReferenceId">Talk Reference Id</param>
+        /// <param name="talkId">Talk Id</param>
         /// <returns>IEnumerable of object of the type <see cref="TrainingDTO"</returns>
         /// <response code="200">Returns a List of TalkDTO</response>
         /// <response code="204">No Content</response>
         /// <response code="500">Internal Server Error</response>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TrainingDTO>>> GetTrainings(Guid talkReferenceId)
+        public async Task<ActionResult<IEnumerable<TrainingDTO>>> GetTrainings(Guid talkId)
         {
             try
             {
-                var trainings = await _trainingService.GetAllTrainingsAsync(talkReferenceId);
+                var trainings = await _trainingService.GetAllTrainingsAsync(talkId);
 
                 if (trainings == null || !trainings.Any())
                 {
-                    _logger.LogInformation($"Training for talk {talkReferenceId} not found.");
+                    _logger.LogInformation($"Training for talk {talkId} not found.");
                     return NoContent();
                 }
 
@@ -42,7 +42,7 @@ namespace Talks.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogCritical($"Error while getting Trainings for talk {talkReferenceId}", ex);
+                _logger.LogCritical($"Error while getting Trainings for talk {talkId}", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Unable to process your request");
             }
         }
@@ -50,22 +50,22 @@ namespace Talks.Api.Controllers
         /// <summary>
         /// Gets a Training
         /// </summary>
-        /// <param name="talkReferenceId">Talk Reference Id</param>
-        /// <param name="trainingReferenceId">Training code</param>
+        /// <param name="talkId">Talk Id</param>
+        /// <param name="trainingId">Training code</param>
         /// <returns>Object of the type <see cref="TrainingDTO"</returns>
         /// <response code="200">Returns a TalkDTO</response>
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server Error</response>
-        [HttpGet("{trainingReferenceId}")]
-        public async Task<ActionResult<TalkDTO>> GetTraining(Guid talkReferenceId, Guid trainingReferenceId)
+        [HttpGet("{trainingId}")]
+        public async Task<ActionResult<TalkDTO>> GetTraining(Guid talkId, Guid trainingId)
         {
             try
             {
-                var training = await _trainingService.GetTrainingAsync(talkReferenceId, trainingReferenceId);
+                var training = await _trainingService.GetTrainingAsync(talkId, trainingId);
 
                 if (training == null)
                 {
-                    _logger.LogInformation($"Training {trainingReferenceId} for talk {talkReferenceId} not found.");
+                    _logger.LogInformation($"Training {trainingId} for talk {talkId} not found.");
                     return NotFound();
                 }
 
@@ -73,7 +73,7 @@ namespace Talks.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogCritical($"Error while getting Training {trainingReferenceId} for talk {talkReferenceId}", ex);
+                _logger.LogCritical($"Error while getting Training {trainingId} for talk {talkId}", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Unable to process your request");
             }
         }

@@ -42,6 +42,6 @@ namespace Talks.Data.Repositories
         /// Get Last Talk Id
         /// </summary>
         /// <returns>Id of the last talk</returns>
-        int GetLastTalkId();
+        Guid GetLastTalkId();
     }
 }
