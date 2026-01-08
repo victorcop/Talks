@@ -1,5 +1,10 @@
 # 🎤 Talks API
 
+[![.NET Build & Test](https://github.com/victorcop/Talks/actions/workflows/workflow-main.yml/badge.svg?branch=main)](https://github.com/victorcop/Talks/actions/workflows/workflow-main.yml)
+[![.NET Version](https://img.shields.io/badge/.NET-9.0-512BD4)](https://dotnet.microsoft.com/download/dotnet/9.0)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/victorcop/Talks?style=social)](https://github.com/victorcop/Talks)
+
 A clean architecture ASP.NET Core Web API for managing conference talks and presentations.
 
 ## 📖 Overview
@@ -107,14 +112,14 @@ This provides interactive API documentation and testing capabilities.
 
 - **ASP.NET Core 9.0**: Web API framework
 - **AutoMapper**: Object-to-object mapping
-- # 🧪 Testing
+- **Swashbuckle**: Swagger/OpenAPI documentation
+- **Dependency Injection**: Built-in DI container
+
+### 🧪 Testing
 
 - **xUnit**: Testing framework
 - **Moq**: Mocking library
 - **FluentAssertions**: Assertion library for readable tests
-
-##**Swashbuckle**: Swagger/OpenAPI documentation
-- **Dependency Injection**: Built-in DI container
 
 ## 🏛️ Architecture
 
@@ -124,7 +129,13 @@ The project follows clean architecture principles:
 2. **Talks.Service**: Implements business logic, depends on Domain layer
 3. **Talks.Api**: Handles HTTP requests/responses, depends on Service layer
 
-This� Running Tests
+This separation ensures:
+- ✅ Testability
+- 🔧 Maintainability
+- 🎯 Clear separation of concerns
+- 🔄 Flexibility to change implementations
+
+## 🧪 Running Tests
 
 ### Run all tests
 ```bash
@@ -154,12 +165,6 @@ The test suite includes:
   - Validates service method calls
   - Theory tests for multiple scenarios
 
-## � separation ensures:
-- ✅ Testability
-- 🔧 Maintainability
-- 🎯 Clear separation of concerns
-- 🔄 Flexibility to change implementations
-
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -170,4 +175,4 @@ The test suite includes:
 
 ## 📄 License
 
-This project is for educational/demonstration purposes.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
